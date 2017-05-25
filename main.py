@@ -6,10 +6,9 @@ import argparse
 
 drwCircle = None
 ax = None
-radius = 1.2
 
 def calculate_pi(point):
-	return point[0]**2 + point[1]**2 < radius**2
+	return (point[0]-0.5)**2 + (point[1]-0.5)**2 < 0.25
 
 def draw():
 	i += 1
@@ -32,15 +31,16 @@ def main():
 
 	arguments = parser.parse_args()
 
-	plt.axis([0,1,0,1])
-	plt.xlim(-0.75, 0.75)
-	plt.ylim(-0.75, 0.75)
+	plt.axis([-0.5, 0.5, -0.5, 0.5])
+	plt.ion()
+	#plt.xlim(-0.5, 0.5)
+	#plt.ylim(-0.5, 0.5)
 	plt.gca().set_aspect('equal', adjustable='box')
 	drwCircle = plt.Circle((0,0), 0.5, color='r', fill=False)
 	ax = plt.gca()
 	ax.cla()
 	ax.add_artist(drwCircle)
-	t = ax.text(-1.2, -0.9, "textbar current")
+	t = ax.text(-0.6, -0.9, "textbar current")
 	#ax.add_artist(t)
 	count = inside_count = 0
 
@@ -51,9 +51,11 @@ def main():
 			point = (random.random(), random.random())
 			if calculate_pi(point):
 				inside_count += 1
+				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='g')
+			else:
+				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='r')
 			count += 1
 			pi = (inside_count / count) * 4
-			drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='g')
 			ax.add_artist(drwDot)
 			#if i % 5 == 0:
 			t.set_text("Obecna wartość PI: %f" % pi)
@@ -64,9 +66,11 @@ def main():
 			point = (random.random(), random.random())
 			if calculate_pi(point):
 				inside_count += 1
+				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='g')
+			else:
+				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='r')
 			count += 1
 			pi = (inside_count / count) * 4
-			drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='g')
 			ax.add_artist(drwDot)
 			if i % 15 == 0:
 				t.set_text("Obecna wartość PI: %f" % pi)
