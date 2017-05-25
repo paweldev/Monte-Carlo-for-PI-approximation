@@ -4,6 +4,7 @@ mpl.rcParams['toolbar'] = 'None'
 import matplotlib.pyplot as plt
 import argparse
 import numpy as np
+import time
 
 drwCircle = None
 ax = None
@@ -11,57 +12,40 @@ ax = None
 def calculate_pi(point):
 	return (point[0]-0.5)**2 + (point[1]-0.5)**2 < 0.25
 
-def draw():
-	i += 1
-	point = (random.random(), random.random())
-	if calculate_pi(point):
-		inside_count += 1
-	count += 1
-	pi = (inside_count / count) * 4
-	drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='g')
-	ax.add_artist(drwDot)
-	if i % 15 == 0:
-		t.set_text("Obecna wartość PI: %f" % pi)
-		plt.pause(0.0001)
-
 def main():
 	i = 0
-	parser = argparse.ArgumentParser();
+	parser = argparse.ArgumentParser();																#tu sie zaczyna parsowanie argumentow command line'a
 	group = parser.add_mutually_exclusive_group(required=False)
 	group.add_argument("-i", "--iterations_number", nargs="+", help="set the counter manually")
 
-	arguments = parser.parse_args()
+	arguments = parser.parse_args()																	#a tu sie konczy
 
 	plt.axis([-0.5, 0.5, -0.5, 0.5])
 	plt.ion()
-	#plt.xlim(-0.5, 0.5)
-	#plt.ylim(-0.5, 0.5)
 	plt.gca().set_aspect('equal', adjustable='box')
-	drwCircle = plt.Circle((0,0), 0.5, color='r', fill=False)
+	drwCircle = plt.Circle((0,0), 0.5, color='r', fill=False)										#tworze kolo
 	ax = plt.gca()
 	ax.cla()
-	ax.set_autoscale_on(False)
-	plt.xticks(np.arange(-0.5,0.6,0.1))
-	plt.yticks(np.arange(-0.5,0.6,0.1))
+	ax.set_autoscale_on(False)																		#pozwala recznie ustalic skale
+	plt.xticks(np.arange(-0.5,0.6,0.1))																#ustawia skale osi x
+	plt.yticks(np.arange(-0.5,0.6,0.1))																#ustawia skale osi y
 	ax.add_artist(drwCircle)
-	t = ax.text(-0.6, -0.6, "textbar current")
-	#ax.add_artist(t)
+	t = ax.text(-0.6, -0.6, "textbar current")														#ustawia polozenie napisu
 	count = inside_count = 0
 
-	if arguments.iterations_number is not None:
-		j = int(arguments.iterations_number[0])
+	if arguments.iterations_number is not None:														#to juz brzydsze byc nie moglo
+		j = int(arguments.iterations_number[0])														#ale python nie wie co to zmienna globalna
 		for x in range(1,j):
 			i += 1
 			point = (random.random(), random.random())
 			if calculate_pi(point):
 				inside_count += 1
-				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='g')
+				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.0025, color='g')
 			else:
-				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='r')
+				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.0025, color='r')
 			count += 1
 			pi = (inside_count / count) * 4
 			ax.add_artist(drwDot)
-			#if i % 5 == 0:
 			t.set_text("Obecna wartość PI: %f" % pi)
 			plt.pause(0.001)
 	else:
@@ -70,15 +54,17 @@ def main():
 			point = (random.random(), random.random())
 			if calculate_pi(point):
 				inside_count += 1
-				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='g')
+				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.0025, color='g')
 			else:
-				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.005, color='r')
+				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.0025, color='r')
 			count += 1
 			pi = (inside_count / count) * 4
 			ax.add_artist(drwDot)
 			if i % 15 == 0:
 				t.set_text("Obecna wartość PI: %f" % pi)
 				plt.pause(0.0001)
+
+	time.sleep(5)
 
 if __name__ == "__main__":
 	sys.exit(main())
