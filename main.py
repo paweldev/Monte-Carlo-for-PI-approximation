@@ -3,6 +3,7 @@ import matplotlib as mpl
 mpl.rcParams['toolbar'] = 'None'
 import matplotlib.pyplot as plt
 import argparse
+import numpy as np
 
 drwCircle = None
 ax = None
@@ -39,8 +40,11 @@ def main():
 	drwCircle = plt.Circle((0,0), 0.5, color='r', fill=False)
 	ax = plt.gca()
 	ax.cla()
+	ax.set_autoscale_on(False)
+	plt.xticks(np.arange(-0.5,0.6,0.1))
+	plt.yticks(np.arange(-0.5,0.6,0.1))
 	ax.add_artist(drwCircle)
-	t = ax.text(-0.6, -0.9, "textbar current")
+	t = ax.text(-0.6, -0.6, "textbar current")
 	#ax.add_artist(t)
 	count = inside_count = 0
 
