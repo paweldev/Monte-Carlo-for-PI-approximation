@@ -4,7 +4,6 @@ mpl.rcParams['toolbar'] = 'None'
 import matplotlib.pyplot as plt
 import argparse
 import numpy as np
-import time
 
 drwCircle = None
 ax = None
@@ -33,10 +32,18 @@ def main():
 	t = ax.text(-0.6, -0.6, "textbar current")														#ustawia polozenie napisu
 	count = inside_count = 0
 
+	iterator=0
+
 	if arguments.iterations_number is not None:														#to juz brzydsze byc nie moglo
-		j = int(arguments.iterations_number[0])														#ale python nie wie co to zmienna globalna
-		for x in range(1,j):
+		stop = int(arguments.iterations_number[0])													#ale python nie wie co to zmienna globalna
+		step = 1
+	else:																							#zreszta i tak jest lepiej niz bylo
+		stop = 1
+		step = 0
+
+	while iterator < stop:
 			i += 1
+			iterator += step
 			point = (random.random(), random.random())
 			if calculate_pi(point):
 				inside_count += 1
@@ -47,24 +54,10 @@ def main():
 			pi = (inside_count / count) * 4
 			ax.add_artist(drwDot)
 			t.set_text("Obecna wartość PI: %f" % pi)
-			plt.pause(0.001)
-	else:
-		while True:
-			i += 1
-			point = (random.random(), random.random())
-			if calculate_pi(point):
-				inside_count += 1
-				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.0025, color='g')
-			else:
-				drwDot = plt.Circle((point[0]-0.5, point[1]-0.5), 0.0025, color='r')
-			count += 1
-			pi = (inside_count / count) * 4
-			ax.add_artist(drwDot)
-			if i % 15 == 0:
-				t.set_text("Obecna wartość PI: %f" % pi)
-				plt.pause(0.0001)
+			plt.pause(0.0001)
 
-	time.sleep(5)
+	while True:
+		plt.pause(1)
 
 if __name__ == "__main__":
 	sys.exit(main())
